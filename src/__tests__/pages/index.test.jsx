@@ -190,6 +190,7 @@ describe("pages/index getServerSideProps", () => {
     state.widgetCalls = [];
     state.windowFocused = false;
     router.asPath = "/";
+    router.basePath = "";
     i18n.changeLanguage.mockClear();
   });
 

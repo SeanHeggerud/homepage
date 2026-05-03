@@ -3,6 +3,7 @@ import Container from "components/services/widget/container";
 import { useTranslation } from "next-i18next/pages";
 import { BsCpu, BsFillCpuFill, BsFillPlayFill, BsPauseFill, BsVolumeMuteFill } from "react-icons/bs";
 import { MdOutlineSmartDisplay } from "react-icons/md";
+import { useRouter } from "next/router";
 
 import { getURLSearchParams } from "utils/proxy/api-helpers";
 import useWidgetAPI from "utils/proxy/use-widget-api";
@@ -219,6 +220,8 @@ export default function Component({ service: configuredService }) {
   };
   const enableNowPlaying = service.widget?.enableNowPlaying ?? true;
 
+  const { basePath } = useRouter();
+
   const {
     data: sessionsData,
     error: sessionsError,
@@ -240,7 +243,7 @@ export default function Component({ service: configuredService }) {
         sessionId: session.Id,
       }),
     );
-    const url = `/api/services/proxy?${params.toString()}`;
+    const url = `${basePath}/api/services/proxy?${params.toString()}`;
     await fetch(url, {
       method: "POST",
     }).then(() => {

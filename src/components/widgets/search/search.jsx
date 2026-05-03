@@ -15,6 +15,7 @@ import { Fragment, useEffect, useMemo, useState, useSyncExternalStore } from "re
 import { BiLogoBing } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { SiBaidu, SiBrave, SiDuckduckgo, SiGoogle } from "react-icons/si";
+import { useRouter } from "next/router";
 
 import ContainerForm from "../widget/container_form";
 import Raw from "../widget/raw";
@@ -104,6 +105,8 @@ export default function Search({ options }) {
   const [query, setQuery] = useState("");
   const [providerOverride, setProviderOverride] = useState(null);
   const [searchSuggestions, setSearchSuggestions] = useState([]);
+
+  const { basePath } = useRouter();
   const selectedProvider = providerOverride ?? initialProvider;
 
   useEffect(() => {
@@ -115,7 +118,7 @@ export default function Search({ options }) {
       query.trim().length > 0 &&
       query.trim() !== searchSuggestions[0]
     ) {
-      fetch(`/api/search/searchSuggestion?query=${encodeURIComponent(query)}&providerName=${selectedProvider.name}`, {
+      fetch(`${basePath}/api/search/searchSuggestion?query=${encodeURIComponent(query)}&providerName=${selectedProvider.name}`, {
         signal: abortController.signal,
       })
         .then(async (searchSuggestionResult) => {

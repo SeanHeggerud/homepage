@@ -12,6 +12,7 @@ import { TabProvider } from "utils/contexts/tab";
 import { ThemeProvider } from "utils/contexts/theme";
 
 import nextI18nextConfig from "../../next-i18next.config";
+import { useRouter } from "next/router"
 
 const tailwindSafelist = [
   // TODO: remove pending https://github.com/tailwindlabs/tailwindcss/pull/17147
@@ -71,11 +72,17 @@ const tailwindSafelist = [
 ];
 
 function MyApp({ Component, pageProps }) {
+
+  const { basePath } = useRouter();
+
   return (
     <SessionProvider session={pageProps.session}>
       <SWRConfig
         value={{
-          fetcher: (resource, init) => fetch(resource, init).then((res) => res.json()),
+          fetcher: (resource, init) => {
+          const url = basePath + resource;
+          return fetch(url, init).then((res) => res.json())
+        },
         }}
       >
         <Head>
